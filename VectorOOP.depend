@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1455201356 source:/home/inclusionone/Desktop/codeblock_workspace/VectorOOP/main.cpp
+	<iostream>
+	<vector>
+
