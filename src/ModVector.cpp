@@ -1,12 +1,29 @@
-#include "ModVector.h"
+
+#include <vector>
+
+using namespace std;
+
+
+class ModVector
+{
+    public:
+
+        ModVector();
+        virtual ~ModVector();
+    protected:
+    private:
+};
 
 ModVector::ModVector()
 {
-    //ctor
+ //ctor
 }
 
 ModVector::~ModVector()
 {
     //dtor
 }
+
+
+
 
