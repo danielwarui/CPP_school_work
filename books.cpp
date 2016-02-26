@@ -66,22 +66,22 @@ public:
     }
     vector<Books> sampleBooks(){
         //we want to create ten books
-        string authorList[] = {"Jerry Joel","Derrick Inyangala", "Paul Mwai"};
+        string authorList[] = {"Jerry Joel","Derrick Inyangala", "Paul Mwai","Jane Ngoiri","Nimrod Taabu", "Toils Makabu", "Johnstone Kamau","Barbara Kimenye", "Ellen Sue", "Linda Mutende"};
         
         vector<Books> bookList;
         
         Books * books = new Books[10];
         
-        books[0].bookSetter(authorList[0],"first author","wefw",1.0,32);
-        books[1].bookSetter(authorList[1],"second author","wefw",1.0,32);
-        books[2].bookSetter(authorList[2],"third author","wefw",1.0,32);
-        books[3].bookSetter("asdf","fourth author","wefw",1.0,32);
-        books[4].bookSetter("asdf","fifth author","wefw",1.0,32);
-        books[5].bookSetter("asdf","sixth author","wefw",1.0,32);
-        books[6].bookSetter("asdf","seven author","wefw",1.0,32);
-        books[7].bookSetter("asdf","eightth author","wefw",1.0,32);
-        books[8].bookSetter("asdf","ninth author","wefw",1.0,32);
-        books[9].bookSetter("asdf","tenth author","wefw",1.0,32);
+        books[0].bookSetter(authorList[0],"first author","first Publisher",1.0,32);
+        books[1].bookSetter(authorList[1],"second author","second Publisher",1.0,32);
+        books[2].bookSetter(authorList[2],"third author","third Publisher",1.0,32);
+        books[3].bookSetter(authorList[3],"fourth author","fourth Publisher",1.0,32);
+        books[4].bookSetter(authorList[4],"fifth author","fifth Publisher",1.0,32);
+        books[5].bookSetter(authorList[5],"sixth author","sixth Publisher",1.0,32);
+        books[6].bookSetter(authorList[6],"seven author","seven Publisher",1.0,32);
+        books[7].bookSetter(authorList[7],"eightth author","eightth Publisher",1.0,32);
+        books[8].bookSetter(authorList[8],"ninth author","ninth Publisher",1.0,32);
+        books[9].bookSetter(authorList[9],"tenth author","tenth Publisher",1.0,32);
         
         int i;
         for (i = 0; i < 10; i++){
@@ -95,10 +95,11 @@ public:
     
     
 };
-void getBook(string author, string title);
+string findBook(vector<Books> listBooks, string title);
 
 int main(){
-    string myTake = "y"; 
+    string myTake = "y";
+    string authorSearch;
     int programState;
     vector<Books> listOfBooks;
     Books exampleBooks;
@@ -111,38 +112,60 @@ int main(){
     
     // Create a control system to start the book shop management system
     
-   // cout << "Please press 1 continue and 0 to cancel";
+    // cout << "Please press 1 continue and 0 to cancel";
     // give options the user can pick to run checks on the system
-
+    
     // features include search ... specific book and update price
     cout << "Use the following controls to navigate through the system" << endl;
     cout << "1. SEARCH FOR BOOK >> 1" << endl ;
     cout << "2. UPDATE PRICE FOR SPECIFIC BOOK >> 2 " << endl;
-
+    
     while(myTake == "y"){
         cout << "Enter (1) for search and (2) to update specific book" << endl << endl;
         cin >> programState;
         switch(programState){
             case 1:
-            cout << programState << endl;
-            break;
-
+                cout << programState << endl;
+                cout << "Please enter the author of the book you want to search for..." << endl;
+                cin >>  authorSearch;
+                authorSearch = findBook(listOfBooks, authorSearch);
+                cout << authorSearch;
+                break;
+                
             case 2:
-            cout << programState << endl;
-            break;
+                cout << programState << endl;
+                break;
         }
         
-
-        cout << "press (y) if you want to continue." << endl << " Press any other key to exit program" << endl; 
+        
+        cout << "press (y) if you want to continue." << endl << " Press any other key to exit program" << endl;
         cin >> myTake;
-
+        
     }
-
-
+    
+    
     
 };
 
-void getBook(string author, string title){
+string findBook(vector<Books> listBooks,string author){
+    Books specificBookSearched;
+    string test;
+    int i;
+    
+    for(i = 0; i < listBooks.size(); i++){
+        if(listBooks[i].getAuthor().find(author) != string::npos){
+            specificBookSearched = listBooks[i];
+            test = specificBookSearched.getTitle();
+            break;
+        }
+        else{
+            test = "book not found";
+        }
+    }
+    
+    
+    
+    return test;
     
 }
 
