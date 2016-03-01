@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "classRow.h"
+#include "libcsv-3.0.3/csv.h"
 using namespace std;
 
 
@@ -12,8 +14,8 @@ protected:
     string publisher;
     int stockPosition;
 public:
-    // void storeBook(Books book);
-    
+    //  void storeBook(Books book);
+    // void readFile(string path);
     /*  void bookSetter();
      void stockSetter();
      void priceSetter();
@@ -40,6 +42,10 @@ public:
     string getPublisher(){ return publisher;}
     float getPrice(){ return price;}
     int getStockPosition(){ return stockPosition;}
+
+    void buyBook(int quantity){
+        stockPosition -= quantity;
+    } 
     
     void bookSetter(string Author, string Title, string Publisher, float Price, int StockPosition){
         author = Author;
@@ -55,7 +61,21 @@ public:
     void priceSetter(float Price){
         price = Price;
     }
-    
+    void readFile(string path){
+        vector<Books> bookList;
+        
+        Books * books = new Books[10];
+        ifstream file(path);
+        string value,x;
+         while ( file.good() )
+         {
+         // seperate with comma delimiter
+         getline ( file, value, ',' );
+         cout << value << endl; 
+         }
+
+        
+    }
     void storeBook(Books book){
         ofstream write;
         write.open("qwertyuiop.txt", ios::app);
@@ -65,28 +85,25 @@ public:
         // write << book.getAuthor() << endl;
     }
     vector<Books> sampleBooks(){
+        //string Author, string Title, string Publisher, float Price, int StockPosition
         //we want to create ten books
         string authorList[] = {"Jerry Joel","Derrick Inyangala", "Paul Mwai","Jane Ngoiri","Nimrod Taabu", "Toils Makabu", "Johnstone Kamau","Barbara Kimenye", "Ellen Sue", "Linda Mutende"};
-        
+        string publisherList[] = {"Pearson","Penguin","McGraw","Wiley","Houghton","China","Egmont","Kadokawa","Groupe","Mondadori"};
+        string titleList[] = {"To Kill a Mockingbird","Harry Potter and the Sorcerer's Stone" ,"1984","Pride and Prejudice","The Diary of a Young Girl","Animal Farm","The Hobbit","The Little Prince","The Great Gatsby","The Catcher in the Rye"};
+        float priceList[] = {99.2,43,54.00,34.5,32.1,434.00,499.99,54,9.99,10.99};
+        int stockPosition[] = {43,456,76,23,86,23,76,23,90,10};
+
         vector<Books> bookList;
         
         Books * books = new Books[10];
-        
-        books[0].bookSetter(authorList[0],"first author","first Publisher",1.0,32);
-        books[1].bookSetter(authorList[1],"second author","second Publisher",1.0,32);
-        books[2].bookSetter(authorList[2],"third author","third Publisher",1.0,32);
-        books[3].bookSetter(authorList[3],"fourth author","fourth Publisher",1.0,32);
-        books[4].bookSetter(authorList[4],"fifth author","fifth Publisher",1.0,32);
-        books[5].bookSetter(authorList[5],"sixth author","sixth Publisher",1.0,32);
-        books[6].bookSetter(authorList[6],"seven author","seven Publisher",1.0,32);
-        books[7].bookSetter(authorList[7],"eightth author","eightth Publisher",1.0,32);
-        books[8].bookSetter(authorList[8],"ninth author","ninth Publisher",1.0,32);
-        books[9].bookSetter(authorList[9],"tenth author","tenth Publisher",1.0,32);
+       int j;
+       for (j = 0; j < 10; j++)
+        books[j].bookSetter(authorList[j],titleList[j],publisherList[j],priceList[j],stockPosition[j]);
+       
         
         int i;
         for (i = 0; i < 10; i++){
             bookList.push_back(books[i]);
-            cout << books[i].getTitle() << endl;
         }
         return bookList;
         
@@ -95,11 +112,10 @@ public:
     
     
 };
-string findBook(vector<Books> listBooks, string title);
-
+string findBook(vector<Books> listBooks, string title, string author);
 int main(){
     string myTake = "y";
-    string authorSearch;
+    string authorSearch, titleSearch;
     int programState;
     vector<Books> listOfBooks;
     Books exampleBooks;
@@ -121,19 +137,25 @@ int main(){
     cout << "2. UPDATE PRICE FOR SPECIFIC BOOK >> 2 " << endl;
     
     while(myTake == "y"){
-        cout << "Enter (1) for search and (2) to update specific book" << endl << endl;
+        cout << "Enter (1) for search and (2) to update specific book price" << endl << endl;
         cin >> programState;
         switch(programState){
             case 1:
                 cout << programState << endl;
-                cout << "Please enter the author of the book you want to search for..." << endl;
-                cin >>  authorSearch;
-                authorSearch = findBook(listOfBooks, authorSearch);
+                cout << "Please enter the author and the title for the book you want to search for..." << endl;
+                cin >> authorSearch;
+                cin >> titleSearch;
+                authorSearch = findBook(listOfBooks, titleSearch, authorSearch);
                 cout << authorSearch;
                 break;
                 
             case 2:
-                cout << programState << endl;
+            int price;
+            cout << "Enter the book you want to update and its update price";
+            cin >> titleSearch;
+            cin >> price;
+
+             cout << "thank you your book has been updated";
                 break;
         }
         
@@ -147,7 +169,8 @@ int main(){
     
 };
 
-string findBook(vector<Books> listBooks,string author){
+
+string findBook(vector<Books> listBooks, string title,string author){
     Books specificBookSearched;
     string test;
     int i;
@@ -155,7 +178,7 @@ string findBook(vector<Books> listBooks,string author){
     for(i = 0; i < listBooks.size(); i++){
         if(listBooks[i].getAuthor().find(author) != string::npos){
             specificBookSearched = listBooks[i];
-            test = specificBookSearched.getTitle();
+            test = specificBookSearched.getTitle() + "  " + specificBookSearched.getAuthor() + "  " + specificBookSearched.getPublisher();
             break;
         }
         else{
